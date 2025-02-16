@@ -3,11 +3,12 @@ using UnityEngine.UIElements;
 
 public class Mover : MonoBehaviour
 {
+    private const float Threshold = 0.1f;
+
     [SerializeField] private Transform[] _places;
 
     private float _speed = 2f;
     private int _index;
-    private const float Threshold = 0.1f;
 
     private void Update()
     {
@@ -15,10 +16,10 @@ public class Mover : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, _places[_index].position, _speed * Time.deltaTime);
 
         if (HasReachedTarget(_places[_index]))
-            NextPlace();
+            ChooseNextPlace();
     }
 
-    private void NextPlace()
+    private void ChooseNextPlace()
     {
         _index = ++_index % _places.Length;
         transform.forward = _places[_index].position;

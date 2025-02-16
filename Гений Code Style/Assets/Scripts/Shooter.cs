@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Shooter : MonoBehaviour
 {
     [SerializeField] private Bullet _prefabBullet;
@@ -37,7 +36,7 @@ public class Shooter : MonoBehaviour
 
             if (rigidbody != null)
             {
-                StartCoroutine(bullet.Move(rigidbody, direction));
+                bullet.StartMoveCoroutine(rigidbody, direction);
             }
 
             yield return _waitForSeconds;
