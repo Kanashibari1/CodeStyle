@@ -1,31 +1,31 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private Transform _allPlaces;
-    [SerializeField] private Transform[] _arrayPlaces;
+    [SerializeField] private Transform[] _places;
 
     private float _speed = 2f;
-    private int _currentPosition;
-
-    private void Start()
-    {
-        _arrayPlaces = new Transform[_allPlaces.childCount];
-
-        for (int i = 0; i < _allPlaces.childCount; i++)
-            _arrayPlaces[i] = _allPlaces.GetChild(i);
-    }
+    private int _index;
+    private const float Threshold = 0.1f;
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _arrayPlaces[_currentPosition].position, _speed * Time.deltaTime);
+        transform.LookAt(_places[_index].position);
+        transform.position = Vector3.MoveTowards(transform.position, _places[_index].position, _speed * Time.deltaTime);
 
-        if (transform.position == _arrayPlaces[_currentPosition].position) 
+        if (HasReachedTarget(_places[_index]))
             NextPlace();
     }
 
     private void NextPlace()
     {
-        _currentPosition = ++_currentPosition % _arrayPlaces.Length;
+        _index = ++_index % _places.Length;
+        transform.forward = _places[_index].position;
+    }
+
+    public bool HasReachedTarget(Transform position)
+    {
+        return (position.position - transform.position).sqrMagnitude > Threshold * Threshold;
     }
 }
