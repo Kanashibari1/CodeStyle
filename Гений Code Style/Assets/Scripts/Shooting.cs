@@ -5,15 +5,19 @@ using UnityEngine;
 public class Shooting : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _prefabBullet;
+    [SerializeField] private Bullet _prefabBullet;
     [SerializeField] private float _timeWaitShooting;
 
     private Transform _object;
     private WaitForSeconds _waitForSeconds;
 
-    void Start()
+    private void Awake()
     {
         _waitForSeconds = new(_timeWaitShooting);
+    }
+
+    void Start()
+    {
         StartCoroutine(FireBullets());
     }
 
@@ -22,7 +26,7 @@ public class Shooting : MonoBehaviour
         while (enabled)
         {
             Vector3 direction = (_object.position - transform.position).normalized;
-            GameObject bullet = Instantiate(_prefabBullet, transform.position + direction, Quaternion.identity);
+            Bullet bullet = Instantiate(_prefabBullet, transform.position + direction, Quaternion.identity);
 
             Rigidbody rigidbody = bullet.GetComponent<Rigidbody>();
 

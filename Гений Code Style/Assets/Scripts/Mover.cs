@@ -2,29 +2,30 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] private Transform AllPlaces;
-    [SerializeField] private Transform[] arrayPlaces;
+    [SerializeField] private Transform _allPlaces;
+    [SerializeField] private Transform[] _arrayPlaces;
 
     private float _speed = 2f;
     private int _currentPosition;
 
-    void Start()
+    private void Start()
     {
-        arrayPlaces = new Transform[AllPlaces.childCount];
+        _arrayPlaces = new Transform[_allPlaces.childCount];
 
-        for (int i = 0; i < AllPlaces.childCount; i++)
-            arrayPlaces[i] = AllPlaces.GetChild(i);
+        for (int i = 0; i < _allPlaces.childCount; i++)
+            _arrayPlaces[i] = _allPlaces.GetChild(i);
     }
 
-    public void Update()
+    private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, arrayPlaces[_currentPosition].position, _speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _arrayPlaces[_currentPosition].position, _speed * Time.deltaTime);
 
-        if (transform.position == arrayPlaces[_currentPosition].position) 
+        if (transform.position == _arrayPlaces[_currentPosition].position) 
             NextPlace();
     }
-    public void NextPlace()
+
+    private void NextPlace()
     {
-        _currentPosition = ++_currentPosition % arrayPlaces.Length;
+        _currentPosition = ++_currentPosition % _arrayPlaces.Length;
     }
 }
